@@ -1,18 +1,18 @@
 import requests
 import json
-import pprint
+
 import pandas as pd
 import os
 
-# Get the Overwatch League Schedule and convert to Dictionary
+# Initalization/ Global Variables
 schedule = requests.get("https://api.overwatchleague.com/schedule")
 team_id = [7698, 4402, 7692, 4523, 4407, 7699, 7693, 4525, 4410, 4406, 4405, 4403, 7694, 4524, 4404, 4409, 4408, 7695, 7696, 7697]
 DF_COLUMNS = ["date", "away", "away score", "home", "home score", "winner"]
 sd = json.loads(schedule.text)
-pp=pprint.PrettyPrinter(indent = 8)
 
 
 
+#gets the entire OWL Schedule
 def get_schedule(team, df):
     for i in team:
         date = get_date_played(i["id"])
@@ -24,23 +24,18 @@ def get_schedule(team, df):
             winner = i["winner"]["name"]
         except KeyError:
             winner = "N/A"
-        #dl = [datelis, away, away_score, home, home_score, winner]
         dl = pd.Series([date, away, away_score, home, home_score, winner], DF_COLUMNS)
         df = df.append(dl, ignore_index=True)
 
     return df
 
-
+#gets the specific day played for a match
 def get_date_played(id):
     found = False
     while not found:
         for i in sd["data"]["stages"]:
             for j in i["matches"]:
                 if j["id"] == id:
-                    #print("Found")
-                    #print("Winner:", j["winner"]["name"])
-                    #print("Date Started:",j["startDate"])
-                    #print("")
                     date = j["startDate"]
                     found = True
                     break
@@ -51,7 +46,7 @@ def get_date_played(id):
 
     return date
 
-#keys dict_keys(['id', 'competitors', 'scores', 'conclusionValue', 'conclusionStrategy', 'winner', 'home', 'state', 'status', 'statusReason', 'attributes', 'games', 'clientHints', 'bracket', 'dateCreated', 'flags', 'handle', 'competitorStatuses', 'timeZone', 'actualStartDate', 'actualEndDate', 'startDate', 'endDate', 'showStartTime', 'showEndTime', 'startDateTS', 'endDateTS', 'youtubeId', 'wins', 'ties', 'losses', 'videos', 'tournament', 'broadcastChannels'])
+#gets data from api for each team and adds it to a list of dataframes
 def get_data(df):
     dataframes = []
     for i in team_id:
@@ -72,7 +67,9 @@ if __name__ == "__main__":
     #fill data
     owl_df = get_data(owl_df)
 
+    #write to csv
     i = 0
+    #takes dataframes from list and writes to csv
     while i < len(owl_df):
         if not os.path.isfile('data.csv'):
            owl_df[i].to_csv('data.csv', header=DF_COLUMNS, index=False)
