@@ -22,12 +22,13 @@ sd = json.loads(schedule.text)
 sd18 = json.loads(schedule_2018.text)
 
 #Other Initializations
-logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+#logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 logging.debug("Debug Activated")
 
 
 #gets the entire OWL Schedule
-def get_schedule(schedule, df):
+def get_schedule(schedule, df, total):
+    currentnum = 0
     for i in schedule:
         #Ignoring All Stars as it has no impact on season standings
         if i["name"] == "All-Stars":
@@ -63,6 +64,11 @@ def get_schedule(schedule, df):
 
             #general logging message
             logging.debug("%s vs %s recorded!", str(away), str(home))
+
+            #progress bar
+            currentnum += 1
+            percentage = (currentnum/total) * 100
+            print("Progress on Data Collection: {0:.2f}%!".format(percentage))
 
             df = df.append(dl, ignore_index=True)
 
@@ -147,12 +153,14 @@ def get_match_player(m,away,home):
 def get_data(df):
     dataframes = []
     #starting with 2018
-    data2018 = get_schedule(sd18["data"]["stages"], df)
+    numberofgames = get_size_of_schedule(sd18)
+    data2018 = get_schedule(sd18["data"]["stages"], df, numberofgames)
     dataframes.append(data2018)
     print("The 2018 Season was successfully collected")
 
     #continuing to 2019
-    data2019 = get_schedule(sd["data"]["stages"], df)
+    numberofgames = get_size_of_schedule(sd)
+    data2019 = get_schedule(sd["data"]["stages"], df, numberofgames)
     dataframes.append(data2019)
     print("The 2019 Season was successfully collected")
 
@@ -161,6 +169,15 @@ def get_data(df):
 
     return dataframes_con
 
+#created for progress bar
+def get_size_of_schedule(sd):
+    total = 0
+    for i in sd["data"]["stages"]:
+        if i["slug"] == 'all-star' or i["slug"] == 'playoffs' or i["slug"] == 'grand-finals' :
+           continue
+        for j in i["weeks"]:
+            total = total + len(j["matches"])
+    return total
 
 if __name__ == "__main__":
 
