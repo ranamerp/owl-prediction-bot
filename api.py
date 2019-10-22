@@ -1,6 +1,7 @@
 import requests
 import json
-
+import time
+import progressbar
 import pandas as pd
 import logging, sys
 import os
@@ -22,57 +23,55 @@ sd = json.loads(schedule.text)
 sd18 = json.loads(schedule_2018.text)
 
 #Other Initializations
-logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG)
 logging.basicConfig(filename='log.log')
 logging.debug("Debug Activated")
 
 
 
 #gets the entire OWL Schedule
+
 def get_schedule(schedule, df, total):
     currentnum = 0
-    for i in schedule:
-        #Ignoring All Stars as it has no impact on season standings
-        if i["name"] == "All-Stars":
-            continue
-        for j in i["matches"]:
-            #Ignoring Playoffs as data is too inconsistant
-            #if j['conclusionStrategy'] == "BEST_OF" or j['conclusionStrategy'] == "FIRST_TO":
-            #    continue
-
-            id = j["id"]
-            date = j["startDate"]
-            stage = j["bracket"]["stage"]["tournament"]["title"]
-            away = j["competitors"][0]["name"]
-            away_score = j["scores"][0]["value"]
-            home = j["competitors"][1]["name"]
-            home_score = j["scores"][1]["value"]
-
-            #in the case that the match hasn't been played, winner will be NaN
-            try:
-                winner = j["winner"]["name"]
-            except KeyError:
-                winner = None
+    with progressbar.ProgressBar(max_value=total) as bar:
+        for i in schedule:
+            #Ignoring All Stars as it has no impact on season standings
+            if i["name"] == "All-Stars":
                 continue
-            #gets map data
-            match_series = get_match_data(id, away, home)
+            for j in i["matches"]:
+                id = j["id"]
+                date = j["startDate"]
+                stage = j["bracket"]["stage"]["tournament"]["title"]
+                away = j["competitors"][0]["name"]
+                away_score = j["scores"][0]["value"]
+                home = j["competitors"][1]["name"]
+                home_score = j["scores"][1]["value"]
 
-            #adds all data to a series object
-            dl = pd.Series([date, stage, away, away_score, home, home_score, winner], DF_COLUMNS)
+                #in the case that the match hasn't been played, winner will be NaN
+                try:
+                    winner = j["winner"]["name"]
+                except KeyError:
+                    winner = None
+                    continue
+                #gets map data
+                match_series = get_match_data(id, away, home)
 
-            #merges map data with match data
-            for k in match_series:
-                dl = pd.concat([dl, k])
+                #adds all data to a series object
+                dl = pd.Series([date, stage, away, away_score, home, home_score, winner], DF_COLUMNS)
 
-            #general logging message
-            logging.debug("%s vs %s recorded!", str(away), str(home))
+                #merges map data with match data
+                for k in match_series:
+                    dl = pd.concat([dl, k])
 
-            #progress bar
-            currentnum += 1
-            percentage = (currentnum/total) * 100
-            print("Progress on Data Collection: {0:.2f}%!".format(percentage))
+                #general logging message
+                logging.debug("%s vs %s recorded!", str(away), str(home))
 
-            df = df.append(dl, ignore_index=True)
+                df = df.append(dl, ignore_index=True)
+
+                #progress bar
+                currentnum += 1
+                time.sleep(0.1)
+                bar.update(currentnum)
 
 
 
@@ -162,6 +161,7 @@ def get_match_player(m,away,home):
 def get_data(df):
     #TODO create a method that reads csv and creates a basic dataframe so it doesnt have to recollect data every time.
     dataframes = []
+
     #starting with 2018
     numberofgames = get_size_of_schedule(sd18)
     data2018 = get_schedule(sd18["data"]["stages"], df, numberofgames)
