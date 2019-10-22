@@ -22,8 +22,10 @@ sd = json.loads(schedule.text)
 sd18 = json.loads(schedule_2018.text)
 
 #Other Initializations
-#logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+logging.basicConfig(filename='log.log')
 logging.debug("Debug Activated")
+
 
 
 #gets the entire OWL Schedule
@@ -35,8 +37,8 @@ def get_schedule(schedule, df, total):
             continue
         for j in i["matches"]:
             #Ignoring Playoffs as data is too inconsistant
-            if j['conclusionStrategy'] == "BEST_OF" or j['conclusionStrategy'] == "FIRST_TO":
-                continue
+            #if j['conclusionStrategy'] == "BEST_OF" or j['conclusionStrategy'] == "FIRST_TO":
+            #    continue
 
             id = j["id"]
             date = j["startDate"]
@@ -120,12 +122,19 @@ def get_match_data(id, away, home):
 
 #gets the roster fielded for each map
 def get_match_player(m,away,home):
-
+    # TODO Create method that gets heroes used by each player.
     #initialization of variables
     away_team_colums = ["Away Player 1", "Away Player 2", "Away Player 3", "Away Player 4", "Away Player 5", "Away Player 6"]
     home_team_colums = ["Home Player 1", "Home Player 2", "Home Player 3", "Home Player 4", "Home Player 5", "Home Player 6"]
     home_team = []
     away_team = []
+
+    #tests if map was anticipated to be played but was not played (This is primarily a 2018 artifact)
+    if len(m["players"]) is 0:
+        for i in range(0, 6):
+            player_name = None
+            away_team.append(player_name)
+            home_team.append(player_name)
 
     for i in m["players"]:
         player_name = i['player']['name']
@@ -151,6 +160,7 @@ def get_match_player(m,away,home):
 
 #gets data from api for each team and adds it to a list of dataframes
 def get_data(df):
+    #TODO create a method that reads csv and creates a basic dataframe so it doesnt have to recollect data every time.
     dataframes = []
     #starting with 2018
     numberofgames = get_size_of_schedule(sd18)
@@ -171,19 +181,18 @@ def get_data(df):
 
 #created for progress bar
 def get_size_of_schedule(sd):
+    #TODO Use progress bar library to make visual progress bar
+
     total = 0
     for i in sd["data"]["stages"]:
-        if i["slug"] == 'all-star' or i["slug"] == 'playoffs' or i["slug"] == 'grand-finals' :
-           continue
-        for j in i["weeks"]:
-            total = total + len(j["matches"])
+        if i["slug"] != 'all-star':
+            total = total + len(i["matches"])
     return total
 
 if __name__ == "__main__":
 
     # create an empty dataframe
     owl_df = pd.DataFrame(columns=DF_COLUMNS + match_colums)
-
 
     #fill data
     owl_df = get_data(owl_df)
