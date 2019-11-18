@@ -44,35 +44,35 @@ ID_TO_NAME = {
     7696: "Vancouver Titans",
     7697: "Washington Justice"
 }
-MATCH_COLUMS = ["Map 1 Name", "Map 1 Type", "Map 1 Away Points", "Map 1 Home Points",
+MATCH_COLUMS = ["Map 1 Name", "Map 1 Type", "Map 1 Away Points", "Map 1 Home Points", "Map 1 Winner",
                 "Map 1 Away Player 1", "Map 1 Away Player 2", "Map 1 Away Player 3", "Map 1 Away Player 4", "Map 1 Away Player 5", "Map 1 Away Player 6",
                 "Map 1 Home Player 1", "Map 1 Home Player 2", "Map 1 Home Player 3", "Map 1 Home Player 4", "Map 1 Home Player 5", "Map 1 Home Player 6",
 
-                "Map 2 Name", "Map 2 Type", "Map 2 Away Points", "Map 2 Home Points",
+                "Map 2 Name", "Map 2 Type", "Map 2 Away Points", "Map 2 Home Points", "Map 2 Winner",
                 "Map 2 Away Player 1", "Map 2 Away Player 2", "Map 2 Away Player 3", "Map 2 Away Player 4", "Map 2 Away Player 5", "Map 2 Away Player 6",
                 "Map 2 Home Player 1", "Map 2 Home Player 2", "Map 2 Home Player 3", "Map 2 Home Player 4", "Map 2 Home Player 5", "Map 2 Home Player 6",
 
-                "Map 3 Name", "Map 3 Type", "Map 3 Away Points", "Map 3 Home Points",
+                "Map 3 Name", "Map 3 Type", "Map 3 Away Points", "Map 3 Home Points", "Map 3 Winner",
                 "Map 3 Away Player 1", "Map 3 Away Player 2", "Map 3 Away Player 3", "Map 3 Away Player 4", "Map 3 Away Player 5", "Map 3 Away Player 6",
                 "Map 3 Home Player 1", "Map 3 Home Player 2", "Map 3 Home Player 3", "Map 3 Home Player 4", "Map 3 Home Player 5", "Map 3 Home Player 6",
 
-                "Map 4 Name", "Map 4 Type", "Map 4 Away Points", "Map 4 Home Points",
+                "Map 4 Name", "Map 4 Type", "Map 4 Away Points", "Map 4 Home Points", "Map 4 Winner",
                 "Map 4 Away Player 1", "Map 4 Away Player 2", "Map 4 Away Player 3", "Map 4 Away Player 4", "Map 4 Away Player 5", "Map 4 Away Player 6",
                 "Map 4 Home Player 1", "Map 4 Home Player 2", "Map 4 Home Player 3", "Map 4 Home Player 4", "Map 4 Home Player 5", "Map 4 Home Player 6",
 
-                "Map 5 Name", "Map 5 Type", "Map 5 Away Points", "Map 5 Home Points",
+                "Map 5 Name", "Map 5 Type", "Map 5 Away Points", "Map 5 Home Points", "Map 5 Winner",
                 "Map 5 Away Player 1", "Map 5 Away Player 2", "Map 5 Away Player 3", "Map 5 Away Player 4", "Map 5 Away Player 5", "Map 5 Away Player 6",
                 "Map 5 Home Player 1", "Map 5 Home Player 2", "Map 5 Home Player 3", "Map 5 Home Player 4", "Map 5 Home Player 5", "Map 5 Home Player 6",
 
-                "Map 6 Name", "Map 6 Type", "Map 6 Away Points", "Map 6 Home Points",
+                "Map 6 Name", "Map 6 Type", "Map 6 Away Points", "Map 6 Home Points", "Map 6 Winner",
                 "Map 6 Away Player 1", "Map 6 Away Player 2", "Map 6 Away Player 3", "Map 6 Away Player 4", "Map 6 Away Player 5", "Map 6 Away Player 6",
                 "Map 6 Home Player 1", "Map 6 Home Player 2", "Map 6 Home Player 3", "Map 6 Home Player 4", "Map 6 Home Player 5", "Map 6 Home Player 6",
 
-                "Map 7 Name", "Map 7 Type", "Map 7 Away Points", "Map 7 Home Points",
+                "Map 7 Name", "Map 7 Type", "Map 7 Away Points", "Map 7 Home Points", "Map 7 Winner",
                 "Map 7 Away Player 1", "Map 7 Away Player 2", "Map 7 Away Player 3", "Map 7 Away Player 4", "Map 7 Away Player 5", "Map 7 Away Player 6",
                 "Map 7 Home Player 1", "Map 7 Home Player 2", "Map 7 Home Player 3", "Map 7 Home Player 4", "Map 7 Home Player 5", "Map 7 Home Player 6",
 
-                "Map 8 Name", "Map 8 Type", "Map 8 Away Points", "Map 8 Home Points",
+                "Map 8 Name", "Map 8 Type", "Map 8 Away Points", "Map 8 Home Points", "Map 8 Winner",
                 "Map 8 Away Player 1", "Map 8 Away Player 2", "Map 8 Away Player 3", "Map 8 Away Player 4", "Map 8 Away Player 5", "Map 8 Away Player 6",
                 "Map 8 Home Player 1", "Map 8 Home Player 2", "Map 8 Home Player 3", "Map 8 Home Player 4", "Map 8 Home Player 5", "Map 8 Home Player 6"]
 

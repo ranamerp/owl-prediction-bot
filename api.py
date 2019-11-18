@@ -7,23 +7,16 @@ import logging, sys
 import os
 
 # Local Imports
-from constants import MAP_TYPE, ID_TO_NAME, MATCH_COLUMS
-
-#API Requests
-schedule = requests.get("https://api.overwatchleague.com/schedule")
-schedule_2018 = requests.get("https://api.overwatchleague.com/schedule?season=2018")
+from constants import MAP_TYPE, ID_TO_NAME, MATCH_COLUMS, HERO_ROLES
 
 #Dictionaries
-DF_COLUMNS = ["date", "stage", "away", "away score", "home", "home score","winner"]
+DF_COLUMNS = ["date", "stage", "away", "away id", "away score", "home", "home id", "home score", "winner", "winner id", "home point differential", "away point differential","winner label"]
 match_colums = MATCH_COLUMS
-MAP_COLUMNS = ["Name", "Type", "Away Points", "Home Points"]
+MAP_COLUMNS = ["Name", "Type", "Away Points", "Home Points", "Winner"]
 
-#JSON Loading of API Repsonses
-sd = json.loads(schedule.text)
-sd18 = json.loads(schedule_2018.text)
 
 #Other Initializations
-logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig(level=logging.DEBUG)
 logging.basicConfig(filename='log.log')
 logging.debug("Debug Activated")
 
@@ -43,21 +36,31 @@ def get_schedule(schedule, df, total):
                 date = j["startDate"]
                 stage = j["bracket"]["stage"]["tournament"]["title"]
                 away = j["competitors"][0]["name"]
+                away_id = get_keys_by_value(away)
                 away_score = j["scores"][0]["value"]
                 home = j["competitors"][1]["name"]
+                home_id = get_keys_by_value(home)
                 home_score = j["scores"][1]["value"]
+                home_dif = home_score - away_score
+                away_dif = away_score - home_score
 
                 #in the case that the match hasn't been played, winner will be NaN
                 try:
                     winner = j["winner"]["name"]
+                    winner_id = get_keys_by_value(winner)
+                    if winner == home:
+                        winner_label = "Home"
+                    if winner == away:
+                        winner_label = "Away"
                 except KeyError:
                     winner = None
+                    winner_id = None
                     continue
                 #gets map data
                 match_series = get_match_data(id, away, home)
 
                 #adds all data to a series object
-                dl = pd.Series([date, stage, away, away_score, home, home_score, winner], DF_COLUMNS)
+                dl = pd.Series([date, stage, away, away_id, away_score, home, home_id, home_score, winner, winner_id, home_score, away_score, winner_label], DF_COLUMNS)
 
                 #merges map data with match data
                 for k in match_series:
@@ -70,7 +73,6 @@ def get_schedule(schedule, df, total):
 
                 #progress bar
                 currentnum += 1
-                time.sleep(0.1)
                 bar.update(currentnum)
 
 
@@ -103,11 +105,21 @@ def get_match_data(id, away, home):
             away_points = None
             home_points = None
 
+        if away_points != None and home_points != None :
+            if away_points > home_points:
+                map_winner = "Away"
+            elif away_points < home_points:
+                map_winner = "Home"
+            elif away_points == home_points:
+                map_winner = "Draw"
+        else:
+            map_winner = None
+
         #iterates on colums so each index is unique
         colums = ["Map " + str(number) + " " + j for j in MAP_COLUMNS]
 
         #adds data to series
-        map_numbers = pd.Series([name, type, away_points, home_points], colums)
+        map_numbers = pd.Series([name, type, away_points, home_points, map_winner], colums)
 
         #gets roster for each map
         roster_info = get_match_player(i, away, home)
@@ -157,37 +169,50 @@ def get_match_player(m,away,home):
     at= pd.Series(away_team, at_colums)
     return at, ht
 
+
+
 #gets data from api for each team and adds it to a list of dataframes
 def get_data(df):
     #TODO create a method that reads csv and creates a basic dataframe so it doesnt have to recollect data every time.
-    dataframes = []
+    #dataframes = []
 
+
+
+    '''
     #starting with 2018
     numberofgames = get_size_of_schedule(sd18)
     data2018 = get_schedule(sd18["data"]["stages"], df, numberofgames)
     dataframes.append(data2018)
     print("The 2018 Season was successfully collected")
+    '''
+    schedule = requests.get("https://api.overwatchleague.com/schedule?season={}".format(year))
+    sd = json.loads(schedule.text)
 
     #continuing to 2019
     numberofgames = get_size_of_schedule(sd)
-    data2019 = get_schedule(sd["data"]["stages"], df, numberofgames)
-    dataframes.append(data2019)
-    print("The 2019 Season was successfully collected")
+    data = get_schedule(sd["data"]["stages"], df, numberofgames)
+    print("The {} Season was successfully collected".format(year))
+    df.append(data)
 
     #merge both dataframes into one singular one
-    dataframes_con = pd.concat(dataframes, sort=False)
+    #dataframes_con = pd.concat(dataframes, sort=False)
 
-    return dataframes_con
+    return data
 
 #created for progress bar
 def get_size_of_schedule(sd):
-    #TODO Use progress bar library to make visual progress bar
-
     total = 0
     for i in sd["data"]["stages"]:
         if i["slug"] != 'all-star':
             total = total + len(i["matches"])
     return total
+
+
+def get_keys_by_value(item):
+    for key, value in ID_TO_NAME.items():
+        if item == value:
+            return key
+
 
 if __name__ == "__main__":
 
@@ -195,6 +220,7 @@ if __name__ == "__main__":
     owl_df = pd.DataFrame(columns=DF_COLUMNS + match_colums)
 
     #fill data
+    year = input("Please enter the year you would like to collect (Note: any misinput will collect data from current year) : ")
     owl_df = get_data(owl_df)
 
     #sort values and delete duplicate data
@@ -204,7 +230,7 @@ if __name__ == "__main__":
 
 
     #write to csv
-    owl_df.to_csv('data.csv', header=DF_COLUMNS + match_colums, index=False)
+    owl_df.to_csv('data{}.csv'.format(year), header=DF_COLUMNS + match_colums, index=False)
 
 
 
