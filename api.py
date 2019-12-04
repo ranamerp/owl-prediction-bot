@@ -7,7 +7,7 @@ import logging, sys
 import os
 
 # Local Imports
-from constants import MAP_TYPE, ID_TO_NAME, MATCH_COLUMS, HERO_ROLES
+from constants import MAP_TYPE, ID_TO_NAME, MATCH_COLUMS, GUID_TO_MAP_NAME
 
 #Dictionaries
 DF_COLUMNS = ["date", "stage", "away", "away id", "away score", "home", "home id", "home score", "winner", "winner id", "home point differential", "away point differential","winner label"]
@@ -91,7 +91,8 @@ def get_match_data(id, away, home):
         number = i["number"]
         #if name is blank then both are None
         try:
-            name = i["attributes"]["map"]
+            guid = i["attributes"]["mapGuid"]
+            name = i["attributes"]["map"] or GUID_TO_MAP_NAME.get(guid)
             type = MAP_TYPE.get(name)
         except KeyError:
             name = None
