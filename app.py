@@ -93,10 +93,10 @@ def predict_winner(team1, team2, model, stats):
     # turn id back into name
     def convert_prediction(prediction):
         if prediction[0] == 1:
-            # Home Won
+            # Team 1 Won
             return ID_TO_NAME.get(testrow[0])
         if prediction[0] == 0:
-            # Away Won
+            # Team 2 Won
             return ID_TO_NAME.get(testrow[1])
 
     cols = ["Points Earned", "Points Lost", "Points Differential", "Points Differential Rank", "True Win %",
@@ -143,7 +143,6 @@ def predict_winner(team1, team2, model, stats):
     prediction = model.predict([testrow])
 
     return convert_prediction(prediction)
-    #print('Winner: ', convert_prediction(prediction))
 
 if __name__ == "__main__":
     app.run(debug=True)

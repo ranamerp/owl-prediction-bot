@@ -1,27 +1,62 @@
 <html>
 <style>
-	body {
- 	 background-image: url('https://cdn.discordapp.com/attachments/332650004608974849/688162157442891892/OWLmspaintefforts.png');
+    @font-face {
+		font-family: "BigNoodleToo";
+		src: url("http://us.battle.net/forums/static/fonts/bignoodletoo/bignoodletoo.woff") format("woff"),
+		url("http://us.battle.net/forums/static/fonts/bignoodletoo/bignoodletoo.ttf") format("opentype");
 	}
+    body{background-image: url('https://cdn.discordapp.com/attachments/332650004608974849/688162157442891892/OWLmspaintefforts.png');
+        color: #FA9C1D;
+        font-family: 'BigNoodleToo', Arial, sans-serif;
+        font-size: 1.6em;
+    }
+    .center h1 {
+    	font-size: 300%;
+    }
+    .center {
+        margin: auto;
+        width: 60%;
+        padding: 30px;
+        text-align: center;
+	}
+	.button {
+		background-color: #4A4C4E;
+		color: #fff;
+		font-size: inherit;
+		padding: 0.35em;
+		border: 0;
+		margin: 0;
+		border-radius: 3px;
+		text-align: center;
+		}
+	.button:hover {
+			background-color: #FA9C1D;
+		}
+
 </style>
 <body>
-	<h3> Overwatch League Prediction Site </h3>
-	<div>
-		<form action="/filter" method="POST">
-			<label for="filters">Select how you would like to filter out the database(Use CTRL to select multiple filters): </label>
-			<select id="filters" name="filters" multiple>
-				<option value="Stage 1">Stage 1</option>
-				<option value="Stage 2">Stage 2</option>
-				<option value="Stage 3">Stage 3</option>
-				<option value="Stage 4">Stage 4</option>
-				<option value="Post-Season">Playoffs</option>
-			</select>
-			<br/>
-			<br/>
+	<div class="center">
+		<h1> Overwatch League Prediction Site </h1>
+		<div>
+			<form action="/filter" method="POST">
+				<label for="filters">
+					<h2> Select how you would like to filter out the database  </h2>
+					<h3> (Use CTRL to select multiple filters): </h3>
+				</label>
+					<select id="filters" name="filters" multiple>
+						<option value="Stage 1">Stage 1</option>
+						<option value="Stage 2">Stage 2</option>
+						<option value="Stage 3">Stage 3</option>
+						<option value="Stage 4">Stage 4</option>
+						<option value="Post-Season">Playoffs</option>
+					</select>
+				<br/>
+				<br/>
 
-				<input type="submit" value="Submit"> </input>
-		</form> 
-	</div> 
+					<input type="submit" class="button" value="Submit"> </input>
+			</form>
+		</div>
+	</div>
 </body> 
 
 </html> 

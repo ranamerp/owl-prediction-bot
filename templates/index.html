@@ -5,27 +5,65 @@
     <title>Overwatch League ML Prediction</title>
 </head>
 <style>
-	body {
- 	 background-image: url('https://cdn.discordapp.com/attachments/332650004608974849/688162157442891892/OWLmspaintefforts.png');
+    @font-face {
+		font-family: "BigNoodleToo";
+		src: url("http://us.battle.net/forums/static/fonts/bignoodletoo/bignoodletoo.woff") format("woff"),
+		url("http://us.battle.net/forums/static/fonts/bignoodletoo/bignoodletoo.ttf") format("opentype");
 	}
+    body{background-image: url('https://cdn.discordapp.com/attachments/332650004608974849/688162157442891892/OWLmspaintefforts.png');
+        color: #FA9C1D;
+        font-family: 'BigNoodleToo', Arial, sans-serif;
+        font-size: 1.6em;
+    }
+    .center h1 {
+    	font-size: 300%;
+    }
+    .center {
+        margin: auto;
+        width: 60%;
+        padding: 30px;
+        text-align: center;
+	}
+	.button {
+		background-color: #4A4C4E;
+		color: #fff;
+		font-size: inherit;
+		padding: 0.35em;
+		border: 0;
+		margin: 0;
+		border-radius: 3px;
+		text-align: center;
+		}
+	.button:hover {
+			background-color: #FA9C1D;
+		}
+
 </style>
 <body>
-	<h1> Overwatch League Prediction Site </h1>
-    <div>
-        <h2> Would you like to load new models? </h2>
-        <h3> Current Model Filters: </h3>
-        Random Forest: {{ randomfilters }}
-        Logistic Regression: {{ logfilters }}
-        K Nearest Neighbors: {{ knnfilters }}
-        SVC: {{ svcfilters }}
-
-        <form action="/choice" method="post" name="choice">
-            <input type="radio" id="yes" name='choice' value="yes">
-            <label for="yes"> Yes </label>
-            <input type="radio" id="no" name='choice' value="no">
-            <label for="no"> No </label>
-            <input type="submit" value="confirm">
-        </form>
+    <div class="center">
+	    <h1> Overwatch League Prediction Site </h1>
+        <div>
+            <h2> Would you like to load new models? </h2>
+            <h3> Current Model Filters: </h3>
+            Random Forest: {{ randomfilters }}
+            <br/>
+            Logistic Regression: {{ logfilters }}
+            <br/>
+            K Nearest Neighbors: {{ knnfilters }}
+            <br/>
+            SVC: {{ svcfilters }}
+            <br/>
+            <br/>
+            <form action="/choice" method="post" name="choice">
+                <input type="radio" id="yes" name='choice' value="yes" checked>
+                <label for="yes"> Yes </label>
+                <br/>
+                <input type="radio" id="no" name='choice' value="no">
+                <label for="no"> No </label>
+                <br/>
+                <input type="submit" class= "button" value="confirm">
+            </form>
+        </div>
     </div>
 </body>
 </html>
