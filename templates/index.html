@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Overwatch League ML Prediction</title>
+</head>
+<style>
+	body {
+ 	 background-image: url('https://cdn.discordapp.com/attachments/332650004608974849/688162157442891892/OWLmspaintefforts.png');
+	}
+</style>
+<body>
+	<h1> Overwatch League Prediction Site </h1>
+    <div>
+        <h2> Would you like to load new models? </h2>
+        <h3> Current Model Filters: </h3>
+        Random Forest: {{ randomfilters }}
+        Logistic Regression: {{ logfilters }}
+        K Nearest Neighbors: {{ knnfilters }}
+        SVC: {{ svcfilters }}
+
+        <form action="/choice" method="post" name="choice">
+            <input type="radio" id="yes" name='choice' value="yes">
+            <label for="yes"> Yes </label>
+            <input type="radio" id="no" name='choice' value="no">
+            <label for="no"> No </label>
+            <input type="submit" value="confirm">
+        </form>
+    </div>
+</body>
+</html>

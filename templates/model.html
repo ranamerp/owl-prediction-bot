@@ -1,0 +1,79 @@
+<html>
+<style>
+body {
+  background-image: url('https://cdn.discordapp.com/attachments/332650004608974849/688162157442891892/OWLmspaintefforts.png');
+}
+</style>
+<body>
+	<h3> Overwatch League Prediction Site </h3>
+	<div>
+		<form action="{{ url_for('model')}}" method="post" name="team">
+			<label for="model">Choose a model to predict: </label>
+			<select id="model" name="model">
+				<option value="randomforest.pkl">Random Forest</option>
+				<option value="logisticregression.pkl">Logistic Regression</option>
+				<option value="kneighbors.pkl">K Nearest Neighbors</option>
+				<option value="svc.pkl">SVC</option>
+			</select>
+			<br/>
+			<br/>
+			<label for="team1">Team 1</label>
+			<select id="team1" name="team1">
+				<option value="Atlanta Reign">Atlanta Reign</option>
+				<option value="Boston Uprising">Boston Uprising</option>
+				<option value="Chengdu Hunters">Chengdu Hunters</option>
+				<option value="Dallas Fuel">Dallas Fuel</option>
+				<option value="Florida Mayhem">Florida Mayhem</option>
+				<option value="Guangzhou Charge">Guangzhou Charge</option>
+				<option value="Hangzhou Spark">Hangzhou Spark</option>
+				<option value="Houston Outlaws">Houston Outlaws</option>
+				<option value="London Spitfire">London Spitfire</option>
+				<option value="Los Angeles Gladiators">Los Angeles Gladiators</option>
+				<option value="Los Angeles Valiant">Los Angeles Valiant</option>
+				<option value="New York Excelsior">New York Excelsior</option>
+				<option value="Paris Eternal">Paris Eternal</option>
+				<option value="Philadelphia Fusion">Philadelphia Fusion</option>
+				<option value="San Francisco Shock">San Francisco Shock</option>
+				<option value="Seoul Dynasty">Seoul Dynasty</option>
+				<option value="Shanghai Dragons">Shanghai Dragons</option>
+				<option value="Toronto Defiant">Toronto Defiant</option>
+				<option value="Vancouver Titans">Vancouver Titans</option>
+				<option value="Washington Justice">Washington Justice</option>
+			</select>
+			<br/>
+			<label for="team2">Team 2</label>
+			<select id="team2" name="team2">
+				<option value="Atlanta Reign">Atlanta Reign</option>
+				<option value="Boston Uprising">Boston Uprising</option>
+				<option value="Chengdu Hunters">Chengdu Hunters</option>
+				<option value="Dallas Fuel">Dallas Fuel</option>
+				<option value="Florida Mayhem">Florida Mayhem</option>
+				<option value="Guangzhou Charge">Guangzhou Charge</option>
+				<option value="Hangzhou Spark">Hangzhou Spark</option>
+				<option value="Houston Outlaws">Houston Outlaws</option>
+				<option value="London Spitfire">London Spitfire</option>
+				<option value="Los Angeles Gladiators">Los Angeles Gladiators</option>
+				<option value="Los Angeles Valiant">Los Angeles Valiant</option>
+				<option value="New York Excelsior">New York Excelsior</option>
+				<option value="Paris Eternal">Paris Eternal</option>
+				<option value="Philadelphia Fusion">Philadelphia Fusion</option>
+				<option value="San Francisco Shock">San Francisco Shock</option>
+				<option value="Seoul Dynasty">Seoul Dynasty</option>
+				<option value="Shanghai Dragons">Shanghai Dragons</option>
+				<option value="Toronto Defiant">Toronto Defiant</option>
+				<option value="Vancouver Titans">Vancouver Titans</option>
+				<option value="Washington Justice">Washington Justice</option>
+			</select>
+			<br/>
+			<br/>
+			<br/>
+		 	<input type="submit" value="Submit">
+		</form>
+
+		{{ prediction }}
+		
+		
+	</div> 
+</body> 
+
+</html> 
